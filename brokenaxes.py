@@ -12,6 +12,7 @@ __author__ = 'Ben Dichter'
 class BrokenAxes:
     def __init__(self, xlims=None, ylims=None, d=.015, tilt=45,
                  subplot_spec=None, fig=None, despine=True,
+                 width_ratios=None, height_ratios=None,
                  *args, **kwargs):
         """Creates a grid of axes that act like a single broken axes
 
@@ -52,19 +53,21 @@ class BrokenAxes:
         else:
             self.fig = fig
 
-        if xlims:
-            width_ratios = [i[1] - i[0] for i in xlims]
-        else:
-            width_ratios = [1]
+        if width_ratios is None:
+            if xlims:
+                width_ratios = [i[1] - i[0] for i in xlims]
+            else:
+                width_ratios = [1]
 
         # handle datetime xlims
         if type(width_ratios[0]) == timedelta:
             width_ratios = [tt.total_seconds() for tt in width_ratios]
 
-        if ylims:
-            height_ratios = [i[1] - i[0] for i in ylims[::-1]]
-        else:
-            height_ratios = [1]
+        if height_ratios is None:
+            if ylims:
+                height_ratios = [i[1] - i[0] for i in ylims[::-1]]
+            else:
+                height_ratios = [1]
 
         # handle datetime ylims
         if type(height_ratios[0]) == timedelta:
